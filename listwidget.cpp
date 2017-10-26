@@ -7,10 +7,12 @@ ListWidget::ListWidget(QWidget *parent)
     layout_w = new QFrame(this);
     layout_w->setFrameStyle(QFrame::Panel | QFrame::Raised);
     layout_w->setLineWidth(2);
+    layout_w->resize(100,1000);
     margin_w += 10;
     setViewportMargins(10,0,10,0);
     setWidget(layout_w);
-    connect(verticalScrollBar(),SIGNAL(valueChanged(int)),this,SLOT(scrollMoved(int)));
+    connect(verticalScrollBar(), &QScrollBar::valueChanged,
+            this, &ListWidget::scrollMoved);
 }
 
 ListWidget::~ListWidget()
@@ -22,9 +24,10 @@ void ListWidget::setModel(QAbstractItemModel *model)
 {
     //загрузка первого элемента, для установки размеров
     model_ptr = model;
-    items.append(new ListWidgetItem(layout_w));
+    items.append(getDataWidgetType(model_ptr,Qt::DisplayRole,layout_w));
     items[0]->show();
-    items[0]->setData(model_ptr->data(model_ptr->index(0,0)));
+    //items[0]->setData(model_ptr->data(model_ptr->index(0,0)));
+    setDataToWidget(items[0],model_ptr,0);
     index_first = 0;
     model_first = 0;
 
@@ -32,9 +35,10 @@ void ListWidget::setModel(QAbstractItemModel *model)
     page_size = this->height() / items[0]->height() + 2;
     index_last = page_size - 1;
     for(int i = 1; i < page_size; ++i){
-        items.append(new ListWidgetItem(layout_w));
+        items.append(getDataWidgetType(model_ptr,Qt::DisplayRole,layout_w));
         items[i]->show();
-        items[i]->setData(model_ptr->data(model_ptr->index(i,0)));
+        //items[i]->setData(model_ptr->data(model_ptr->index(i,0)));
+        setDataToWidget(items[i],model_ptr,i);
         items[i]->move(0,items[i-1]->y() + items[i]->height());
     }
     model_last = page_size - 1;
@@ -61,14 +65,16 @@ void ListWidget::resizeEvent(QResizeEvent *event)
     if(new_page_size > page_size){ //добавление
         for(int i = 0; i < new_page_size - page_size; ++i){
             if(index_last == items.size() - 1){
-                items.append(new ListWidgetItem(layout_w));
+                items.append(getDataWidgetType(model_ptr,Qt::DisplayRole,layout_w));
                 ++index_last;
             }else{
-                items.insert(++index_last,new ListWidgetItem(layout_w));
+                items.insert(++index_last,getDataWidgetType(model_ptr,Qt::DisplayRole,layout_w));
                 ++index_first;
             }
             items[index_last]->show();
-            items[index_last]->setData(model_ptr->data(model_ptr->index(++model_last,0)));
+
+            //items[index_last]->setData(model_ptr->data(model_ptr->index(++model_last,0)));
+            setDataToWidget(items[index_last],model_ptr,++model_last);
             items[index_last]->move(0,items[index_last-1]->y() + items[index_last]->height());
         }
         page_size = new_page_size;
@@ -97,7 +103,8 @@ void ListWidget::scrollMoved(int value)
         int diff_num = ((value + height()) - (items[index_last]->y() + items[index_last]->height())) / items[0]->height();
         for(int i = 0; i <= diff_num; ++i){
             ++model_first;
-            items[index_first]->setData(model_ptr->data(model_ptr->index(++model_last,0)));
+            //items[index_first]->setData(model_ptr->data(model_ptr->index(++model_last,0)));
+            setDataToWidget(items[index_first],model_ptr,++model_last);
             items[index_first]->move(0,items[index_last]->y() + items[index_last]->height());
             index_last = index_first;
             index_first = nextIndex(index_first);
@@ -107,7 +114,8 @@ void ListWidget::scrollMoved(int value)
         int diff_num = (items[index_first]->y() - value) / items[0]->height();
         for(int i = 0; i <= diff_num; ++i){
             --model_last;
-            items[index_last]->setData(model_ptr->data(model_ptr->index(--model_first,0)));
+            //items[index_last]->setData(model_ptr->data(model_ptr->index(--model_first,0)));
+            setDataToWidget(items[index_last],model_ptr,--model_first);
             items[index_last]->move(0,items[index_first]->y() - items[index_first]->height());
             index_first = index_last;
             index_last = prevIndex(index_last);

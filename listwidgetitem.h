@@ -22,3 +22,7 @@ private:
 };
 
 #endif // LISTWIDGETITEM_H
+
+QWidget* getDataWidgetType(QAbstractItemModel* model, int role, QWidget* parent);
+
+void setDataToWidget(QWidget *item, QAbstractItemModel *model, int row);

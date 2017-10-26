@@ -26,8 +26,8 @@ private:
 
     QAbstractItemModel *model_ptr;
     QFrame *layout_w;
-    QVector <ListWidgetItem*> items;
-    int margin_w = 0;
+    QVector <QWidget*> items;
+    int margin_w;
     int page_size;
     int index_first, index_last;
     int model_first, model_last;
