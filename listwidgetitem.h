@@ -9,7 +9,7 @@ class ListWidgetItem : public QFrame
 public:
     explicit ListWidgetItem(QWidget *parent = nullptr);
 
-    void setData(QVariant v);
+    void setTextLabel(QVariant v);
 
 signals:
 
@@ -22,7 +22,3 @@ private:
 };
 
 #endif // LISTWIDGETITEM_H
-
-QWidget* getDataWidgetType(QAbstractItemModel* model, int role, QWidget* parent);
-
-void setDataToWidget(QWidget *item, QAbstractItemModel *model, int row);

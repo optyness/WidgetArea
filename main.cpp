@@ -1,5 +1,7 @@
 #include "listwidget.h"
-#include "listwidgetitem.h"
+//#include "listwidgetitem.h"
+#include "cardlist.h"
+//#include "cardwidget.h"
 
 #include <QApplication>
 
@@ -7,7 +9,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     QWidget w;
-    ListWidget *list = new ListWidget;
+    CardList *list = new CardList;
     QHBoxLayout *layout = new QHBoxLayout(&w);
     layout->addWidget(list);
     w.setLayout(layout);
@@ -17,7 +19,11 @@ int main(int argc, char *argv[])
     QStringListModel *model = new QStringListModel();
     QStringList lines;
     for(int i = 0; i < 1000; ++i)
-        lines << QString("%1").arg(i);
+        if(i % 5 == 0){
+            lines << QString("IDCard");
+        }else{
+            lines << QString("List");
+        }
     model->setStringList(lines);
     list->setModel(model);
 

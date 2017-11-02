@@ -12,11 +12,15 @@ find_package(Qt5Widgets)
 
 set (HEADERS 
 	listwidget.h
-	listwidgetitem.h)
+        listwidgetitem.h
+        cardlist.h
+        cardwidget.h)
  
 set (SOURCES 
 	listwidget.cpp
         listwidgetitem.cpp
+        cardlist.cpp
+        cardwidget.cpp
 	main.cpp) 
 
 # Tell CMake to create the helloworld executable
