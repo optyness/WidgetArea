@@ -2,25 +2,35 @@
 
 CardWidget::CardWidget(QWidget *parent) : QFrame(parent)
 {
-    resize(70,120);
-    text_t = new QLabel("test",this);
-    text_b = new QLabel("test2",this);
-    text_r = new QLabel("test3",this);
+    resize(150,70);
+    text_name = new QLabel(this);
+    text_f = new QLabel(this);
+    text_age = new QLabel(this);
 
     setFrameStyle(QFrame::Panel | QFrame::Raised);
     setLineWidth(2);
 
     QGridLayout *layout = new QGridLayout(this);
-    layout->addWidget(text_t,0,1);
-    layout->addWidget(text_b,1,0);
-    layout->addWidget(text_r,2,1);
+    layout->addWidget(text_name,0,0);
+    layout->addWidget(text_f,1,0);
+    layout->addWidget(text_age,2,0);
     setLayout(layout);
 }
 
-void CardWidget::setTextLabel(QVariant v)
+void CardWidget::setName(QVariant v)
 {
     QString s = v.toString();
-    text_t->setText(s);
-    text_b->setText(s);
-    text_r->setText(s);
+    text_name->setText(s);
+}
+
+void CardWidget::setFName(QVariant v)
+{
+    QString s = v.toString();
+    text_f->setText(s);
+}
+
+void CardWidget::setAge(QVariant v)
+{
+    int age = v.toInt();
+    text_age->setText(QString("Возраст: %1").arg(age));
 }

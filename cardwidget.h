@@ -9,12 +9,14 @@ class CardWidget : public QFrame
 public:
     CardWidget(QWidget *parent = nullptr);
 
-    void setTextLabel(QVariant v);
+    void setName(QVariant v);
+    void setFName(QVariant v);
+    void setAge(QVariant v);
 
 private:
-    QLabel *text_t;
-    QLabel *text_b;
-    QLabel *text_r;
+    QLabel *text_name;
+    QLabel *text_f;
+    QLabel *text_age;
 };
 
 #endif // CARDWIDGET_H

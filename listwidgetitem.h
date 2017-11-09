@@ -9,16 +9,12 @@ class ListWidgetItem : public QFrame
 public:
     explicit ListWidgetItem(QWidget *parent = nullptr);
 
-    void setTextLabel(QVariant v);
-
-signals:
-
-public slots:
+    void setSender(QVariant v);
+    void setMessage(QVariant v);
 
 private:
-    QLabel *text_t;
-    QLabel *text_b;
-    QLabel *text_r;
+    QLabel *text_sender;
+    QLabel *text_message;
 };
 
 #endif // LISTWIDGETITEM_H

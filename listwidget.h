@@ -2,6 +2,7 @@
 #define LISTWIDGET_H
 
 #include <QtWidgets>
+#include "widgettype.h"
 
 class ListWidget : public QScrollArea
 {
@@ -26,11 +27,10 @@ private:
     int nextIndex(int index);
     int prevIndex(int index);
 
-    enum class WType;
     QAbstractItemModel *model_ptr;
     QFrame *layout_w;
     QVector<QWidget*> items;
-    QMap<QString,QVector<QWidget*>> cache;
+    QMap<WType,QVector<QWidget*>> cache;
     int old_scroll;
     int index_first, index_last;
     int model_first, model_last;
