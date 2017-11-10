@@ -9,8 +9,8 @@ class ListWidgetItem : public QFrame
 public:
     explicit ListWidgetItem(QWidget *parent = nullptr);
 
-    void setSender(QVariant v);
-    void setMessage(QVariant v);
+    void setSender(QString sender);
+    void setMessage(QString message);
 
 private:
     QLabel *text_sender;

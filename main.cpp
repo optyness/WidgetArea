@@ -28,7 +28,8 @@ int main(int argc, char *argv[])
 //    model->setStringList(lines);
 
     WidgetModel *model = new WidgetModel();
-    for(int i = 0; i < 17; ++i){
+    for(int i = 0; i < 7; ++i){
+        model->createData();
 //        if(i % 3 == 0){
             model->setData(QModelIndex(),QVariant::fromValue(WType::NameCard),Qt::UserRole);
             model->setData(QModelIndex(),

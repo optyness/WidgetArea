@@ -15,14 +15,12 @@ ListWidgetItem::ListWidgetItem(QWidget *parent) : QFrame(parent)
     setLayout(layout);
 }
 
-void ListWidgetItem::setSender(QVariant v)
+void ListWidgetItem::setSender(QString sender)
 {
-    QString s = v.toString();
-    text_sender->setText(s);
+    text_sender->setText(sender);
 }
 
-void ListWidgetItem::setMessage(QVariant v)
+void ListWidgetItem::setMessage(QString message)
 {
-    QString s = v.toString();
-    text_message->setText(s);
+    text_message->setText(message);
 }

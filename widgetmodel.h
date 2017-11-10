@@ -16,11 +16,18 @@ public:
 
     bool setData(const QModelIndex &index, const QVariant &value,
                  int role = Qt::EditRole) override;
+    void createData();
 
 private:
-    QVector <QString> names;
-    QVector <QString> f_names;
-    QVector <WType> widget_type;
+    struct DataStruct
+    {
+        WType type;
+        QString name;
+        QString fname;
+        unsigned int age;
+    };
+
+    QVector<DataStruct> model_data;
 };
 
 #endif // WIDGETMODEL_H

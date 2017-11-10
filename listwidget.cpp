@@ -50,6 +50,9 @@ void ListWidget::resizeEvent(QResizeEvent *event)
     if(items.isEmpty())
         return;
 
+    if(items.size() <= model_ptr->rowCount())
+        return;
+
     //проверить с разным количеством элементов в окне и разными размерами
     while(items[index_last]->y() + items[index_last]->height() <
             verticalScrollBar()->value() + height()){

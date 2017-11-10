@@ -17,20 +17,17 @@ CardWidget::CardWidget(QWidget *parent) : QFrame(parent)
     setLayout(layout);
 }
 
-void CardWidget::setName(QVariant v)
+void CardWidget::setName(QString name)
 {
-    QString s = v.toString();
-    text_name->setText(s);
+    text_name->setText(name);
 }
 
-void CardWidget::setFName(QVariant v)
+void CardWidget::setFName(QString fname)
 {
-    QString s = v.toString();
-    text_f->setText(s);
+    text_f->setText(fname);
 }
 
-void CardWidget::setAge(QVariant v)
+void CardWidget::setAge(unsigned int age)
 {
-    int age = v.toInt();
     text_age->setText(QString("Возраст: %1").arg(age));
 }
