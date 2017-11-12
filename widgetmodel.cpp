@@ -15,13 +15,13 @@ int WidgetModel::rowCount(const QModelIndex &parent) const
 QVariant WidgetModel::data(const QModelIndex &index, int role) const
 {
     switch(role){
-    case Qt::UserRole:
+    case MRole::type:
         return QVariant::fromValue(model_data[index.row()].type);
-    case Qt::UserRole+1:
+    case MRole::name:
         return QVariant::fromValue(model_data[index.row()].name);
-    case Qt::UserRole+2:
+    case MRole::fname:
         return QVariant::fromValue(model_data[index.row()].fname);
-    case Qt::UserRole+3:
+    case MRole::age:
         return QVariant::fromValue(model_data[index.row()].age);
     default:
         return QVariant();
@@ -31,16 +31,16 @@ QVariant WidgetModel::data(const QModelIndex &index, int role) const
 bool WidgetModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     switch(role){
-    case (Qt::UserRole):
+    case MRole::type:
         model_data[model_data.size() - 1].type = value.value<WType>();
         return true;
-    case Qt::UserRole+1:
+    case MRole::name:
         model_data[model_data.size() - 1].name = value.toString();
         return true;
-    case Qt::UserRole+2:
+    case MRole::fname:
         model_data[model_data.size() - 1].fname = value.toString();
         return true;
-    case Qt::UserRole+3:
+    case MRole::age:
         model_data[model_data.size() - 1].age = value.toInt();
         return true;
     default:

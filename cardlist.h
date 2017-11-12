@@ -5,6 +5,7 @@
 #include "listwidgetitem.h"
 #include "cardwidget.h"
 #include "widgettype.h"
+#include "usermodelrole.h"
 
 class CardList : public ListWidget
 {

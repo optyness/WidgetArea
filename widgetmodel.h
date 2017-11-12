@@ -4,6 +4,7 @@
 #include <QAbstractListModel>
 #include <QtWidgets>
 #include <widgettype.h>
+#include <usermodelrole.h>
 
 class WidgetModel : public QAbstractListModel
 {

@@ -56,7 +56,7 @@ void ListWidget::resizeEvent(QResizeEvent *event)
     //проверить с разным количеством элементов в окне и разными размерами
     while(items[index_last]->y() + items[index_last]->height() <
             verticalScrollBar()->value() + height()){
-        WType type = model_ptr->data(model_ptr->index(++model_last,0)).value<WType>();
+        WType type = model_ptr->data(model_ptr->index(++model_last,0),Qt::UserRole).value<WType>();
         if(!(cache.contains(type))){
             cache.insert(type,QVector<QWidget*>());
         }
@@ -73,7 +73,7 @@ void ListWidget::resizeEvent(QResizeEvent *event)
     }
     while(items[index_last]->y() >
           verticalScrollBar()->value() + height()){
-        WType type = model_ptr->data(model_ptr->index(model_last,0)).value<WType>();
+        WType type = model_ptr->data(model_ptr->index(model_last,0),Qt::UserRole).value<WType>();
         if(!(cache.contains(type))){
             cache.insert(type,QVector<QWidget*>());
         }
@@ -94,8 +94,7 @@ void ListWidget::scrollMoved(int value)
     while((value > items[index_first]->y() + items[index_first]->height()) ||
           (value + height() > items[index_last]->y() + items[index_last]->height())){
         if(value > items[index_first]->y() + items[index_first]->height()){
-            WType type = model_ptr->data(model_ptr->index(model_first,0)).value<WType>();
-            //QString type = model_ptr->data(model_ptr->index(model_first,0)).toString();
+            WType type = model_ptr->data(model_ptr->index(model_first,0),Qt::UserRole).value<WType>();
             if(!(cache.contains(type))){
                 cache.insert(type,QVector<QWidget*>());
             }
@@ -108,8 +107,7 @@ void ListWidget::scrollMoved(int value)
         }
         if(value + height() > items[index_last]->y() + items[index_last]->height()){
             if(model_last + 1 >= model_ptr->rowCount()) break;
-            WType type = model_ptr->data(model_ptr->index(++model_last,0)).value<WType>();
-            //QString type = model_ptr->data(model_ptr->index(++model_last,0)).toString();
+            WType type = model_ptr->data(model_ptr->index(++model_last,0),Qt::UserRole).value<WType>();
             if(!(cache.contains(type))){
                 cache.insert(type,QVector<QWidget*>());
             }
@@ -130,8 +128,7 @@ void ListWidget::scrollMoved(int value)
     while((value + height() < items[index_last]->y()) ||
           (value < items[index_first]->y() + items[index_first]->height())){
         if(value + height() < items[index_last]->y()){
-            WType type = model_ptr->data(model_ptr->index(model_last,0)).value<WType>();
-            //QString type = model_ptr->data(model_ptr->index(model_last,0)).toString();
+            WType type = model_ptr->data(model_ptr->index(model_last,0),Qt::UserRole).value<WType>();
             if(!(cache.contains(type))){
                 cache.insert(type,QVector<QWidget*>());
             }
@@ -145,8 +142,7 @@ void ListWidget::scrollMoved(int value)
         }
         if(value < items[index_first]->y() + items[index_first]->height()){
             if(model_first <= 0) break;
-            WType type = model_ptr->data(model_ptr->index(--model_first,0)).value<WType>();
-            //QString type = model_ptr->data(model_ptr->index(--model_first,0)).toString();
+            WType type = model_ptr->data(model_ptr->index(--model_first,0),Qt::UserRole).value<WType>();
             if(!(cache.contains(type))){
                 cache.insert(type,QVector<QWidget*>());
             }

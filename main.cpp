@@ -1,8 +1,7 @@
 #include "listwidget.h"
-//#include "listwidgetitem.h"
 #include "cardlist.h"
 #include "widgetmodel.h"
-//#include "cardwidget.h"
+#include "usermodelrole.h"
 
 #include <QApplication>
 
@@ -31,13 +30,13 @@ int main(int argc, char *argv[])
     for(int i = 0; i < 7; ++i){
         model->createData();
 //        if(i % 3 == 0){
-            model->setData(QModelIndex(),QVariant::fromValue(WType::NameCard),Qt::UserRole);
+            model->setData(QModelIndex(),QVariant::fromValue(WType::NameCard),(int)MRole::type);
             model->setData(QModelIndex(),
-                           QVariant::fromValue(QString("Имя %1").arg(i)),Qt::UserRole+1);
+                           QVariant::fromValue(QString("Имя %1").arg(i)),(int)MRole::name);
             model->setData(QModelIndex(),
-                           QVariant::fromValue(QString("Фамилия %1").arg(i)),Qt::UserRole+2);
+                           QVariant::fromValue(QString("Фамилия %1").arg(i)),(int)MRole::fname);
             model->setData(QModelIndex(),
-                           QVariant::fromValue(i),Qt::UserRole+3);
+                           QVariant::fromValue(i),(int)MRole::age);
 //        }else{
 //            model->setData(QModelIndex(),QVariant::fromValue(WType::Message),Qt::UserRole);
 //            model->setData(QModelIndex(),
