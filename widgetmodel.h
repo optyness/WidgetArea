@@ -26,6 +26,8 @@ private:
         QString name;
         QString fname;
         unsigned int age;
+        QString sender;
+        QString message;
     };
 
     QVector<DataStruct> model_data;

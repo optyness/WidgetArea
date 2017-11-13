@@ -36,8 +36,8 @@ void CardList::setDataToWidget(QWidget *item, QAbstractItemModel *model, int row
     }
     case WType::Message:{
         ListWidgetItem *data_widget = qobject_cast<ListWidgetItem*>(item);
-        data_widget->setSender(model->data(model->index(row,0),(int)MRole::name).toString());
-        data_widget->setMessage(model->data(model->index(row,0),(int)MRole::fname).toString());
+        data_widget->setSender(model->data(model->index(row,0),(int)MRole::sender).toString());
+        data_widget->setMessage(model->data(model->index(row,0),(int)MRole::message).toString());
         return;
     }
     default:{

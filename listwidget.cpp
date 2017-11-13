@@ -50,12 +50,16 @@ void ListWidget::resizeEvent(QResizeEvent *event)
     if(items.isEmpty())
         return;
 
-    if(items.size() <= model_ptr->rowCount())
+    /*if(items.size() <= model_ptr->rowCount())
+        return;*/
+
+    if(layout_w->height() < height())
         return;
 
     //проверить с разным количеством элементов в окне и разными размерами
     while(items[index_last]->y() + items[index_last]->height() <
             verticalScrollBar()->value() + height()){
+        if(model_last + 1 >= model_ptr->rowCount()) break;
         WType type = model_ptr->data(model_ptr->index(++model_last,0),Qt::UserRole).value<WType>();
         if(!(cache.contains(type))){
             cache.insert(type,QVector<QWidget*>());
@@ -70,6 +74,12 @@ void ListWidget::resizeEvent(QResizeEvent *event)
         setDataToWidget(items[index_last],model_ptr,model_last);
         items[index_last]->show();
         items[index_last]->move(0,items[index_last-1]->y() + items[index_last-1]->height());
+        if(verticalScrollBar()->value() + verticalScrollBar()->pageStep() >= verticalScrollBar()->maximum() &&
+                model_last != model_ptr->rowCount() && items[index_last]->y() + items[index_last]->height() > layout_w->height()){
+            layout_w->resize(layout_w->width(),
+                             items[index_last]->y() + items[index_last]->height());
+            layout_w->show();
+        }
     }
     while(items[index_last]->y() >
           verticalScrollBar()->value() + height()){
@@ -122,6 +132,13 @@ void ListWidget::scrollMoved(int value)
             items[index_last]->show();
             items[index_last]->move(0,items[prevIndex(index_last)]->y()
                     + items[prevIndex(index_last)]->height());
+            //--------
+            if(value + verticalScrollBar()->pageStep() >= verticalScrollBar()->maximum() &&
+                    model_last != model_ptr->rowCount() && items[index_last]->y() + items[index_last]->height() > layout_w->height()){
+                layout_w->resize(layout_w->width(),
+                                 items[index_last]->y() + items[index_last]->height());
+                layout_w->show();
+            }
         }
     }
     if(value < old_scroll)

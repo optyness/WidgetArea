@@ -27,9 +27,9 @@ int main(int argc, char *argv[])
 //    model->setStringList(lines);
 
     WidgetModel *model = new WidgetModel();
-    for(int i = 0; i < 7; ++i){
+    for(int i = 0; i < 170; ++i){
         model->createData();
-//        if(i % 3 == 0){
+        if(i % 3 == 0){
             model->setData(QModelIndex(),QVariant::fromValue(WType::NameCard),(int)MRole::type);
             model->setData(QModelIndex(),
                            QVariant::fromValue(QString("Имя %1").arg(i)),(int)MRole::name);
@@ -37,13 +37,13 @@ int main(int argc, char *argv[])
                            QVariant::fromValue(QString("Фамилия %1").arg(i)),(int)MRole::fname);
             model->setData(QModelIndex(),
                            QVariant::fromValue(i),(int)MRole::age);
-//        }else{
-//            model->setData(QModelIndex(),QVariant::fromValue(WType::Message),Qt::UserRole);
-//            model->setData(QModelIndex(),
-//                           QVariant::fromValue(QString("ФИО Отправителя %1").arg(i)),Qt::UserRole+1);
-//            model->setData(QModelIndex(),
-//                           QVariant::fromValue(QString("Сообщение")),Qt::UserRole+2);
-//        }
+        }else{
+            model->setData(QModelIndex(),QVariant::fromValue(WType::Message),(int)MRole::type);
+            model->setData(QModelIndex(),
+                           QVariant::fromValue(QString("ФИО Отправителя %1").arg(i)),(int)MRole::sender);
+            model->setData(QModelIndex(),
+                           QVariant::fromValue(QString("Сообщение")),(int)MRole::message);
+        }
     }
     list->setModel(model);
 

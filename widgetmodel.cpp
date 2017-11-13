@@ -23,6 +23,10 @@ QVariant WidgetModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(model_data[index.row()].fname);
     case MRole::age:
         return QVariant::fromValue(model_data[index.row()].age);
+    case MRole::message:
+        return QVariant::fromValue(model_data[index.row()].message);
+    case MRole::sender:
+        return QVariant::fromValue(model_data[index.row()].sender);
     default:
         return QVariant();
     }
@@ -42,6 +46,12 @@ bool WidgetModel::setData(const QModelIndex &index, const QVariant &value, int r
         return true;
     case MRole::age:
         model_data[model_data.size() - 1].age = value.toInt();
+        return true;
+    case MRole::sender:
+        model_data[model_data.size() - 1].sender = value.toString();
+        return true;
+    case MRole::message:
+        model_data[model_data.size() - 1].message = value.toString();
         return true;
     default:
         return false;

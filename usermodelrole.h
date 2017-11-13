@@ -7,7 +7,9 @@ enum class MRole {
     type = Qt::UserRole,
     name,
     fname,
-    age
+    age,
+    sender,
+    message
 };
 
 #endif // USERMODELROLE_H
