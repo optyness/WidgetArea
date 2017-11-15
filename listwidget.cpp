@@ -39,7 +39,7 @@ void ListWidget::setModel(QAbstractItemModel *model)
         items[index_last]->show();
         items[index_last]->move(0,items[index_last-1]->y() + items[index_last-1]->height());
     }
-    layout_w->resize(viewport()->width() - 20,
+    layout_w->resize(viewport()->width(),
                     average_height / (index_last + 1) * model_ptr->rowCount());
 }
 
@@ -56,6 +56,11 @@ void ListWidget::resizeEvent(QResizeEvent *event)
     if(layout_w->height() < height())
         return;
 
+    layout_w->resize(viewport()->width(),layout_w->height());
+
+    for(int i = 0; i < items.size(); ++i)
+        items[i]->resize(layout_w->width(),items[i]->height());
+
     //проверить с разным количеством элементов в окне и разными размерами
     while(items[index_last]->y() + items[index_last]->height() <
             verticalScrollBar()->value() + height()){
@@ -68,8 +73,10 @@ void ListWidget::resizeEvent(QResizeEvent *event)
             ++index_first;
         if(cache[type].isEmpty()){
             items.insert(++index_last,getDataWidgetType(model_ptr,model_last,layout_w));
+            items[index_last]->resize(layout_w->width(),items[index_last]->height());//-
         }else{
             items.insert(++index_last,cache[type].takeLast());
+            items[index_last]->resize(layout_w->width(),items[index_last]->height());//-
         }
         setDataToWidget(items[index_last],model_ptr,model_last);
         items[index_last]->show();
@@ -125,8 +132,10 @@ void ListWidget::scrollMoved(int value)
                 ++index_first;
             if(cache[type].isEmpty()){
                 items.insert(++index_last,getDataWidgetType(model_ptr,model_last,layout_w));
+                items[index_last]->resize(layout_w->width(),items[index_last]->height());//-
             }else{
                 items.insert(++index_last,cache[type].takeLast());
+                items[index_last]->resize(layout_w->width(),items[index_last]->height());//-
             }
             setDataToWidget(items[index_last],model_ptr,model_last);
             items[index_last]->show();
@@ -167,8 +176,10 @@ void ListWidget::scrollMoved(int value)
                 ++index_last;
             if(cache[type].isEmpty()){
                 items.insert(index_first,getDataWidgetType(model_ptr,model_first,layout_w));
+                items[index_last]->resize(layout_w->width(),items[index_last]->height());//-
             }else{
                 items.insert(index_first,cache[type].takeLast());
+                items[index_last]->resize(layout_w->width(),items[index_last]->height());//-
             }
             setDataToWidget(items[index_first],model_ptr,model_first);
             items[index_first]->show();
