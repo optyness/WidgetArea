@@ -2,7 +2,7 @@
 
 CardWidget::CardWidget(QWidget *parent) : QFrame(parent)
 {
-    resize(150,70);
+    setFixedSize(150,70);
     text_name = new QLabel(this);
     text_f = new QLabel(this);
     text_age = new QLabel(this);
@@ -10,10 +10,10 @@ CardWidget::CardWidget(QWidget *parent) : QFrame(parent)
     setFrameStyle(QFrame::Panel | QFrame::Raised);
     setLineWidth(2);
 
-    QGridLayout *layout = new QGridLayout(this);
-    layout->addWidget(text_name,0,0);
-    layout->addWidget(text_f,1,0);
-    layout->addWidget(text_age,2,0);
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->addWidget(text_name);
+    layout->addWidget(text_f);
+    layout->addWidget(text_age);
     setLayout(layout);
 }
 

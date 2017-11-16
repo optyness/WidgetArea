@@ -5,8 +5,8 @@ ListWidget::ListWidget(QWidget *parent)
       old_scroll(0)
 {
     layout_w = new QFrame(this);
-    layout_w->setFrameStyle(QFrame::Panel | QFrame::Raised);
-    layout_w->setLineWidth(2);
+    //layout_w->setFrameStyle(QFrame::Panel | QFrame::Raised);
+    //layout_w->setLineWidth(2);
     //layout_w->resize(150,1000);
     setWidget(layout_w);
     connect(verticalScrollBar(), &QScrollBar::valueChanged,
@@ -59,8 +59,15 @@ void ListWidget::resizeEvent(QResizeEvent *event)
     layout_w->resize(viewport()->width(),layout_w->height());
 
     for(int i = 0; i < items.size(); ++i)
-        items[i]->resize(layout_w->width(),items[i]->height());
-
+        if(items[i]->sizeHint().isValid()){
+            if(viewport()->width() > items[i]->sizeHint().width()){
+                items[i]->resize(viewport()->width(),items[i]->height());
+            }else{
+                items[i]->resize(items[i]->sizeHint().width(),items[i]->height());
+            }
+        }else{
+            items[i]->resize(viewport()->width(),items[i]->height());
+        }
     //проверить с разным количеством элементов в окне и разными размерами
     while(items[index_last]->y() + items[index_last]->height() <
             verticalScrollBar()->value() + height()){

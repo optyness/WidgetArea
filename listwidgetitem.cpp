@@ -9,9 +9,9 @@ ListWidgetItem::ListWidgetItem(QWidget *parent) : QFrame(parent)
     setFrameStyle(QFrame::Panel | QFrame::Raised);
     setLineWidth(2);
 
-    QGridLayout *layout = new QGridLayout(this);
-    layout->addWidget(text_sender,0,0);
-    layout->addWidget(text_message,1,0);
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->addWidget(text_sender);
+    layout->addWidget(text_message);
     setLayout(layout);
 }
 
