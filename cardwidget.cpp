@@ -10,7 +10,7 @@ CardWidget::CardWidget(QWidget *parent) : QFrame(parent)
     setFrameStyle(QFrame::Panel | QFrame::Raised);
     setLineWidth(2);
 
-    QVBoxLayout *layout = new QVBoxLayout(this);
+    auto *layout = new QVBoxLayout();
     layout->addWidget(text_name);
     layout->addWidget(text_f);
     layout->addWidget(text_age);

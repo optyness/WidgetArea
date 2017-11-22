@@ -2,15 +2,13 @@
 #define WIDGETMODEL_H
 
 #include <QAbstractListModel>
-#include <QtWidgets>
-#include <widgettype.h>
-#include <usermodelrole.h>
+#include "widgettype.h"
 
 class WidgetModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    WidgetModel(QObject *parent = 0);
+    explicit WidgetModel(QObject *parent = nullptr);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -29,7 +27,6 @@ private:
         QString sender;
         QString message;
     };
-
     QVector<DataStruct> model_data;
 };
 

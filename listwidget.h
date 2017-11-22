@@ -9,23 +9,23 @@ class ListWidget : public QScrollArea
     Q_OBJECT
 
 public:
-    ListWidget(QWidget *parent = 0);
-    ~ListWidget();
+    explicit ListWidget(QWidget *parent = nullptr);
+    ~ListWidget() = default;
 
     void setModel(QAbstractItemModel *model);
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
-    virtual QWidget* getDataWidgetType(QAbstractItemModel *model,
-                                       int row, QWidget *parent) = 0;
+    virtual QWidget* createWidgetForModelRow(QAbstractItemModel *model,
+                                       int row, QWidget *parent) const = 0;
     virtual void setDataToWidget(QWidget *item, QAbstractItemModel *model, int row) = 0;
-    //void cacheAction();
+
 public slots:
-    void scrollMoved(int value);
+    void onScrollMoved(int value);
 
 private:
-    int nextIndex(int index);
-    int prevIndex(int index);
+    int nextIndex(int index) const;
+    int prevIndex(int index) const;
 
     QAbstractItemModel *model_ptr;
     QFrame *layout_w;

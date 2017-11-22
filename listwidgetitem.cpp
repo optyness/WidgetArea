@@ -9,7 +9,7 @@ ListWidgetItem::ListWidgetItem(QWidget *parent) : QFrame(parent)
     setFrameStyle(QFrame::Panel | QFrame::Raised);
     setLineWidth(2);
 
-    QVBoxLayout *layout = new QVBoxLayout(this);
+    auto *layout = new QVBoxLayout();
     layout->addWidget(text_sender);
     layout->addWidget(text_message);
     setLayout(layout);

@@ -1,4 +1,5 @@
 #include "widgetmodel.h"
+#include "usermodelrole.h"
 
 WidgetModel::WidgetModel(QObject *parent)
     :QAbstractListModel(parent)
@@ -14,7 +15,8 @@ int WidgetModel::rowCount(const QModelIndex &parent) const
 
 QVariant WidgetModel::data(const QModelIndex &index, int role) const
 {
-    switch(role){
+    auto r = static_cast<MRole>(role);
+    switch(r){
     case MRole::type:
         return QVariant::fromValue(model_data[index.row()].type);
     case MRole::name:
@@ -34,7 +36,8 @@ QVariant WidgetModel::data(const QModelIndex &index, int role) const
 
 bool WidgetModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    switch(role){
+    auto r = static_cast<MRole>(role);
+    switch(r){
     case MRole::type:
         model_data[model_data.size() - 1].type = value.value<WType>();
         return true;

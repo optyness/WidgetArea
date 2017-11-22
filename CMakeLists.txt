@@ -14,13 +14,17 @@ set (HEADERS
 	listwidget.h
         listwidgetitem.h
         cardlist.h
-        cardwidget.h)
+        cardwidget.h
+        usermodelrole.h
+        widgetmodel.h
+        widgettype.h)
  
 set (SOURCES 
 	listwidget.cpp
         listwidgetitem.cpp
         cardlist.cpp
         cardwidget.cpp
+        widgetmodel.cpp
 	main.cpp) 
 
 # Tell CMake to create the helloworld executable
