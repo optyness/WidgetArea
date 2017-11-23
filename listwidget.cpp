@@ -4,7 +4,7 @@ ListWidget::ListWidget(QWidget *parent)
     : QScrollArea(parent), index_first(0), index_last(0), model_first(0), model_last(0),
       old_scroll(0)
 {
-    layout_w = new QFrame(this);
+    layout_w = new QWidget(this);
     setWidget(layout_w);
     connect(verticalScrollBar(), &QScrollBar::valueChanged,
             this, &ListWidget::onScrollMoved);
@@ -45,22 +45,29 @@ void ListWidget::resizeEvent(QResizeEvent *event)
     if(layout_w->height() < height())
         return;
 
-    layout_w->resize(viewport()->width(), layout_w->height());
+    auto maxSizeHint = 0;
 
     for(int i = 0; i < items.size(); ++i){
         auto viewportWidth = viewport()->width();
         auto itemHight = items[i]->height();
 
         if(items[i]->sizeHint().isValid()){
-            if(viewport()->width() > items[i]->sizeHint().width()){
+            if(viewportWidth > items[i]->sizeHint().width()){
                 items[i]->resize(viewportWidth, itemHight);
             }else{
                 items[i]->resize(items[i]->sizeHint().width(), itemHight);
             }
+            if(items[i]->sizeHint().width() > maxSizeHint)
+                maxSizeHint = items[i]->sizeHint().width();
         }else{
             items[i]->resize(viewportWidth, itemHight);
         }
     }
+
+    if(viewport()->width() < maxSizeHint)
+        layout_w->resize(maxSizeHint, layout_w->height());
+    else
+        layout_w->resize(viewport()->width(), layout_w->height());
 
     while(items[index_last]->y() + items[index_last]->height() <
             verticalScrollBar()->value() + height()){
@@ -81,8 +88,10 @@ void ListWidget::resizeEvent(QResizeEvent *event)
         setDataToWidget(items[index_last], model_ptr,model_last);
         items[index_last]->show();
         items[index_last]->move(0, items[index_last - 1]->y() + items[index_last - 1]->height());
+
         if(verticalScrollBar()->value() + verticalScrollBar()->pageStep() >= verticalScrollBar()->maximum() &&
                 model_last != model_ptr->rowCount() && items[index_last]->y() + items[index_last]->height() > layout_w->height()){
+
             layout_w->resize(layout_w->width(),
                              items[index_last]->y() + items[index_last]->height());
             layout_w->show();

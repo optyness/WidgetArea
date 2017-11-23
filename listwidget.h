@@ -28,7 +28,7 @@ private:
     int prevIndex(int index) const;
 
     QAbstractItemModel *model_ptr;
-    QFrame *layout_w;
+    QWidget *layout_w;
     QVector<QWidget*> items;
     QMap<WType,QVector<QWidget*>> cache;
     int old_scroll;
