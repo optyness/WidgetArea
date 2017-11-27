@@ -2,7 +2,7 @@
 
 ListWidget::ListWidget(QWidget *parent)
     : QScrollArea(parent), index_first(0), index_last(0), model_first(0), model_last(0),
-      old_scroll(0)
+      old_scroll(0), margin(20), margin_b(10)
 {
     layout_w = new QWidget(this);
     setWidget(layout_w);
@@ -18,6 +18,7 @@ void ListWidget::setModel(QAbstractItemModel *model)
     items.append(createWidgetForModelRow(model_ptr, 0, layout_w));
     setDataToWidget(items[index_first], model_ptr, model_first);
     items[0]->show();
+    items[0]->move(margin,margin);
     average_height += items[0]->height();
 
     //загрузка первого листа элементов
@@ -29,10 +30,11 @@ void ListWidget::setModel(QAbstractItemModel *model)
         setDataToWidget(items[index_last], model_ptr, model_last);
         average_height += items[index_last]->height();
         items[index_last]->show();
-        items[index_last]->move(0, items[index_last-1]->y() + items[index_last-1]->height());
+        items[index_last]->move(margin, items[index_last-1]->y() + items[index_last-1]->height() + margin_b);
     }
-    layout_w->resize(viewport()->width(),
-                    average_height / (index_last + 1) * model_ptr->rowCount());
+    layout_w->resize(viewport()->width() + margin * 2,
+                    average_height / (index_last + 1) * model_ptr->rowCount() + margin * 2 +
+                     margin_b * (model_ptr->rowCount() - 1));
 }
 
 void ListWidget::resizeEvent(QResizeEvent *event)
@@ -48,7 +50,7 @@ void ListWidget::resizeEvent(QResizeEvent *event)
     auto maxSizeHint = 0;
 
     for(int i = 0; i < items.size(); ++i){
-        auto viewportWidth = viewport()->width();
+        auto viewportWidth = viewport()->width() - margin * 2;
         auto itemHight = items[i]->height();
 
         if(items[i]->sizeHint().isValid()){
@@ -87,7 +89,7 @@ void ListWidget::resizeEvent(QResizeEvent *event)
         }
         setDataToWidget(items[index_last], model_ptr,model_last);
         items[index_last]->show();
-        items[index_last]->move(0, items[index_last - 1]->y() + items[index_last - 1]->height());
+        items[index_last]->move(margin, items[index_last - 1]->y() + items[index_last - 1]->height() + margin_b);
 
         if(verticalScrollBar()->value() + verticalScrollBar()->pageStep() >= verticalScrollBar()->maximum() &&
                 model_last != model_ptr->rowCount() && items[index_last]->y() + items[index_last]->height() > layout_w->height()){
@@ -117,6 +119,7 @@ void ListWidget::onScrollMoved(int value)
 {
     //присвоение "уходящим" виджетам нового значения и перемещение на сторону "вхождения"
     if(value > old_scroll)
+    //скролл вниз
     while((value > items[index_first]->y() + items[index_first]->height()) ||
           (value + height() > items[index_last]->y() + items[index_last]->height())){
         if(value > items[index_first]->y() + items[index_first]->height()){
@@ -148,8 +151,8 @@ void ListWidget::onScrollMoved(int value)
             }
             setDataToWidget(items[index_last], model_ptr, model_last);
             items[index_last]->show();
-            items[index_last]->move(0, items[prevIndex(index_last)]->y()
-                    + items[prevIndex(index_last)]->height());
+            items[index_last]->move(margin, items[prevIndex(index_last)]->y()
+                    + items[prevIndex(index_last)]->height() + margin_b);
             //--------
             if(value + verticalScrollBar()->pageStep() >= verticalScrollBar()->maximum() &&
                     model_last != model_ptr->rowCount() && items[index_last]->y() + items[index_last]->height() > layout_w->height()){
@@ -160,6 +163,7 @@ void ListWidget::onScrollMoved(int value)
         }
     }
     if(value < old_scroll)
+    //скролл вверх
     while((value + height() < items[index_last]->y()) ||
           (value < items[index_first]->y() + items[index_first]->height())){
         if(value + height() < items[index_last]->y()){
@@ -192,11 +196,17 @@ void ListWidget::onScrollMoved(int value)
             }
             setDataToWidget(items[index_first], model_ptr, model_first);
             items[index_first]->show();
-            items[index_first]->move(0, items[nextIndex(index_first)]->y()
-                    - items[index_first]->height());
+            items[index_first]->move(margin, items[nextIndex(index_first)]->y()
+                    - items[index_first]->height() - margin_b);
         }
     }
     old_scroll = value;
+}
+
+void ListWidget::setMargin(unsigned int between, unsigned int edge)
+{
+    margin = edge;
+    margin_b = between;
 }
 
 int ListWidget::nextIndex(int index) const

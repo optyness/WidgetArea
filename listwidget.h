@@ -6,8 +6,6 @@
 
 class ListWidget : public QScrollArea
 {
-    Q_OBJECT
-
 public:
     explicit ListWidget(QWidget *parent = nullptr);
     ~ListWidget() = default;
@@ -19,6 +17,7 @@ protected:
     virtual QWidget* createWidgetForModelRow(QAbstractItemModel *model,
                                        int row, QWidget *parent) const = 0;
     virtual void setDataToWidget(QWidget *item, QAbstractItemModel *model, int row) = 0;
+    void setMargin(unsigned int between, unsigned int edge);
 
 public slots:
     void onScrollMoved(int value);
@@ -34,6 +33,7 @@ private:
     int old_scroll;
     int index_first, index_last;
     int model_first, model_last;
+    unsigned int margin, margin_b;
 };
 
 #endif // LISTWIDGET_H
