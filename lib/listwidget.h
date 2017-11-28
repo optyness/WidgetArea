@@ -2,7 +2,6 @@
 #define LISTWIDGET_H
 
 #include <QtWidgets>
-#include "widgettype.h"
 
 class ListWidget : public QScrollArea
 {
@@ -29,7 +28,7 @@ private:
     QAbstractItemModel *model_ptr;
     QWidget *layout_w;
     QVector<QWidget*> items;
-    QMap<WType,QVector<QWidget*>> cache;
+    QMap<int,QVector<QWidget*>> cache;
     int old_scroll;
     int index_first, index_last;
     int model_first, model_last;

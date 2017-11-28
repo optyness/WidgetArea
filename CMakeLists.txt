@@ -10,36 +10,15 @@ set(CMAKE_AUTOMOC ON)
 # Find the QtWidgets library
 find_package(Qt5Widgets)
 
-set (LIB_HEADERS
-        listwidget.h
-        )
+include_directories(lib)
 
-set (HEADERS
-        listwidgetitem.h
-        cardlist.h
-        cardwidget.h
-        usermodelrole.h
-        widgetmodel.h
-        widgettype.h
-        )
+file(GLOB_RECURSE HEADERS "src/*.h")
 
-set (LIB_SOURCES
-        listwidget.cpp
-        )
+file(GLOB_RECURSE SOURCES "src/*.cpp")
 
-set (SOURCES
-        listwidgetitem.cpp
-        cardlist.cpp
-        cardwidget.cpp
-        widgetmodel.cpp
-        main.cpp
-        )
-
-add_library(listwidget STATIC ${LIB_HEADERS} ${LIB_SOURCES})
-target_link_libraries(listwidget Qt5::Widgets)
-
-# Tell CMake to create the helloworld executable
 add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES} )
+add_subdirectory(lib)
+
 include_directories(${Qt5Widgets_INCLUDES})
 
 # Use the Widgets module from Qt 5.

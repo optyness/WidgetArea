@@ -48,33 +48,33 @@ void ListWidget::resizeEvent(QResizeEvent *event)
         return;
 
     auto maxSizeHint = 0;
-
+    //ширина внутренних виджетов
     for(int i = 0; i < items.size(); ++i){
-        auto viewportWidth = viewport()->width() - margin * 2;
+        auto viewportWidth = viewport()->width();
         auto itemHight = items[i]->height();
 
         if(items[i]->sizeHint().isValid()){
-            if(viewportWidth > items[i]->sizeHint().width()){
-                items[i]->resize(viewportWidth, itemHight);
+            if(viewportWidth > items[i]->sizeHint().width() + margin * 2){
+                items[i]->resize(viewportWidth - margin * 2, itemHight);
             }else{
                 items[i]->resize(items[i]->sizeHint().width(), itemHight);
             }
             if(items[i]->sizeHint().width() > maxSizeHint)
                 maxSizeHint = items[i]->sizeHint().width();
         }else{
-            items[i]->resize(viewportWidth, itemHight);
+            items[i]->resize(viewportWidth - margin * 2, itemHight);
         }
     }
-
-    if(viewport()->width() < maxSizeHint)
-        layout_w->resize(maxSizeHint, layout_w->height());
+    //ширина внешнего виджета
+    if(viewport()->width() < maxSizeHint + margin * 2)
+        layout_w->resize(maxSizeHint + margin * 2, layout_w->height());
     else
         layout_w->resize(viewport()->width(), layout_w->height());
 
     while(items[index_last]->y() + items[index_last]->height() <
             verticalScrollBar()->value() + height()){
         if(model_last + 1 >= model_ptr->rowCount()) break;
-        WType type = model_ptr->data(model_ptr->index(++model_last, 0), Qt::UserRole).value<WType>();
+        auto type = model_ptr->data(model_ptr->index(++model_last, 0), Qt::UserRole).toInt();
         if(!(cache.contains(type))){
             cache.insert(type, QVector<QWidget*>());
         }
@@ -91,6 +91,7 @@ void ListWidget::resizeEvent(QResizeEvent *event)
         items[index_last]->show();
         items[index_last]->move(margin, items[index_last - 1]->y() + items[index_last - 1]->height() + margin_b);
 
+        //размеры виджета-полотна
         if(verticalScrollBar()->value() + verticalScrollBar()->pageStep() >= verticalScrollBar()->maximum() &&
                 model_last != model_ptr->rowCount() && items[index_last]->y() + items[index_last]->height() > layout_w->height()){
 
@@ -99,9 +100,10 @@ void ListWidget::resizeEvent(QResizeEvent *event)
             layout_w->show();
         }
     }
+    //добавление в начало (растяжение вверх)
     while(items[index_last]->y() >
           verticalScrollBar()->value() + height()){
-        WType type = model_ptr->data(model_ptr->index(model_last, 0), Qt::UserRole).value<WType>();
+        auto type = model_ptr->data(model_ptr->index(model_last, 0), Qt::UserRole).toInt();
         if(!(cache.contains(type))){
             cache.insert(type, QVector<QWidget*>());
         }
@@ -123,7 +125,7 @@ void ListWidget::onScrollMoved(int value)
     while((value > items[index_first]->y() + items[index_first]->height()) ||
           (value + height() > items[index_last]->y() + items[index_last]->height())){
         if(value > items[index_first]->y() + items[index_first]->height()){
-            WType type = model_ptr->data(model_ptr->index(model_first, 0), Qt::UserRole).value<WType>();
+            auto type = model_ptr->data(model_ptr->index(model_first, 0), Qt::UserRole).toInt();
             if(!(cache.contains(type))){
                 cache.insert(type,QVector<QWidget*>());
             }
@@ -136,7 +138,7 @@ void ListWidget::onScrollMoved(int value)
         }
         if(value + height() > items[index_last]->y() + items[index_last]->height()){
             if(model_last + 1 >= model_ptr->rowCount()) break;
-            WType type = model_ptr->data(model_ptr->index(++model_last, 0), Qt::UserRole).value<WType>();
+            auto type = model_ptr->data(model_ptr->index(++model_last, 0), Qt::UserRole).toInt();
             if(!(cache.contains(type))){
                 cache.insert(type, QVector<QWidget*>());
             }
@@ -167,7 +169,7 @@ void ListWidget::onScrollMoved(int value)
     while((value + height() < items[index_last]->y()) ||
           (value < items[index_first]->y() + items[index_first]->height())){
         if(value + height() < items[index_last]->y()){
-            WType type = model_ptr->data(model_ptr->index(model_last, 0), Qt::UserRole).value<WType>();
+            auto type = model_ptr->data(model_ptr->index(model_last, 0), Qt::UserRole).toInt();
             if(!(cache.contains(type))){
                 cache.insert(type, QVector<QWidget*>());
             }
@@ -181,7 +183,7 @@ void ListWidget::onScrollMoved(int value)
         }
         if(value < items[index_first]->y() + items[index_first]->height()){
             if(model_first <= 0) break;
-            WType type = model_ptr->data(model_ptr->index(--model_first, 0), Qt::UserRole).value<WType>();
+            auto type = model_ptr->data(model_ptr->index(--model_first, 0), Qt::UserRole).toInt();
             if(!(cache.contains(type))){
                 cache.insert(type, QVector<QWidget*>());
             }
